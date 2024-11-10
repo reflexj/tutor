@@ -34,9 +34,9 @@ class ServicePost(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    subject = db.Column(db.String(100), nullable=False)  # Subject field
-    university = db.Column(db.String(100), nullable=False)  # University field
-    semester = db.Column(db.String(50), nullable=False)  # Semester field
+    subject = db.Column(db.String(100), nullable=False)
+    university = db.Column(db.String(100), nullable=False)
+    semester = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
@@ -108,10 +108,12 @@ def university():
 def highschool():
     return render_template('highschool.html')
 
-@app.route('/supply')
-def supply():
+@app.route('/lookingfor')
+def looking_for():
+    # Fetch both university services and high school demands
     services = ServicePost.query.all()
-    return render_template('supply.html', services=services)
+    demands = DemandPost.query.all()
+    return render_template('lookingfor.html', services=services, demands=demands)
 
 # Route for individual service pages
 @app.route('/service/<int:service_id>')
@@ -126,9 +128,9 @@ def add_service():
     title = request.form['title']
     description = request.form['description']
     price = float(request.form['price'])
-    subject = request.form['subject']  # Subject input
-    university = request.form['university']  # University input
-    semester = request.form['semester']  # Semester input
+    subject = request.form['subject']
+    university = request.form['university']
+    semester = request.form['semester']
 
     new_post = ServicePost(
         title=title, 
@@ -166,12 +168,13 @@ class DemandPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    subject = db.Column(db.String(100), nullable=False)  # Subject of demand
+    subject = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f'<DemandPost {self.title}>'
 
+# Route to handle high school demand submissions
 @app.route('/add_demand', methods=['POST'])
 @login_required
 def add_demand():
@@ -187,10 +190,7 @@ def add_demand():
     )
     db.session.add(new_demand)
     db.session.commit()
-    return redirect(url_for('highschool'))
-
-
-
+    return redirect(url_for('looking_for'))
 
 if __name__ == "__main__":
     app.run(debug=True)
