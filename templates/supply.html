@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Available Services</h1>
+    </header>
+    
+    <main>
+        {% if services %}
+            <ul>
+                {% for service in services %}
+                    <li>
+                        <h2><a href="{{ url_for('service_detail', service_id=service.id) }}">{{ service.title }}</a></h2>
+                        <p>{{ service.description }}</p>
+                        <p>Category: {{ service.category }}</p>
+                        <p>Price: ${{ service.price }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No services available at the moment.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Your Website</p>
+    </footer>
+</body>
+</html>

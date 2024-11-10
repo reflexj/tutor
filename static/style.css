@@ -1,12 +1,11 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex; /* Make the body a flex container */
-    flex-direction: column; /* Arrange child elements (header, main, footer) in a column */
-    min-height: 100vh; /* Ensure body takes at least 100% of the viewport height */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -16,24 +15,31 @@ header {
     padding: 20px;
 }
 
+nav {
+    display: flex;            /* Make nav a flex container */
+    justify-content: center;   /* Center its contents horizontally */
+}
+
 nav ul {
     list-style-type: none;
-    text-align: center;
+    padding: 0;
+    display: flex;             /* Make ul a flex container */
+    gap: 30px;                 /* Add space between list items */
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 10px;
+    margin: 0;
 }
 
 nav ul li a {
     text-decoration: none;
-    color: #134215;
+    color: #fff;
     font-weight: bold;
+    text-align: center;
 }
 
 main {
-    flex: 1; /* Allow the main content area to take up remaining space */
+    flex: 1;
 }
 
 footer {
