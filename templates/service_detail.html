@@ -14,18 +14,30 @@
                 <li><a href="/university">University Students</a></li>
                 <li><a href="/supply">Supply</a></li>
                 <li><a href="/highschool">High School Students</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
     
     <main>
-        <p><strong>Description:</strong> {{ service.description }}</p>
-        <p><strong>Category:</strong> {{ service.category }}</p>
+        
+        <!-- Additional details for university students -->
+        <p><strong>Subject:</strong> {{ service.subject }}</p>
+        <p><strong>University:</strong> {{ service.university }}</p>
+        <p><strong>Semester:</strong> {{ service.semester }}</p>
         <p><strong>Price:</strong> ${{ service.price }}</p>
+        <p><strong>Description:</strong> {{ service.description }}</p>
     </main>
 
     <footer>
-        <p>&copy; 2023 Your Website</p>
+        <p>&copy; 2024 Student Interaction Website</p>
     </footer>
 </body>
 </html>

@@ -9,6 +9,21 @@
 <body>
     <header>
         <h1>Available Services</h1>
+        <nav>
+            <ul>
+                <li><a href="/university">University Students</a></li>
+                <li><a href="/supply">Supply</a></li>
+                <li><a href="/highschool">High School Students</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </header>
     
     <main>
@@ -17,7 +32,9 @@
                 {% for service in services %}
                     <li>
                         <h2><a href="{{ url_for('service_detail', service_id=service.id) }}">{{ service.title }}</a></h2>
-                        <p>{{ service.description }}</p>
+                        <p>Fach: {{ service.subject }}</p>
+                        <p>Universität: {{ service.university }}</p>
+                        <p>Semester: {{ service.semester }}</p>
                         <p>Category: {{ service.category }}</p>
                         <p>Price: ${{ service.price }}</p>
                     </li>

@@ -14,6 +14,14 @@
                 <li><a href="/university">University Students</a></li>
                 <li><a href="/supply">Supply</a></li>
                 <li><a href="/highschool">High School Students</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -21,15 +29,21 @@
         <form method="POST" action="/add_service">
             <label for="title">Service Title</label>
             <input type="text" id="title" name="title" placeholder="Enter service title" required>
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Subject you offer help with (e.g., Mathematics, Programming)" required>
+
+            <label for="university">University</label>
+            <input type="text" id="university" name="university" placeholder="Name of your university" required>
+
+            <label for="semester">Semester</label>
+            <input type="text" id="semester" name="semester" placeholder="Your current semester (e.g., 3rd Semester)" required>
+
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" placeholder="Price for the service" step="0.5" required>
     
             <label for="description">Description</label>
             <textarea id="description" name="description" placeholder="Describe your service" required></textarea>
-    
-            <label for="category">Category</label>
-            <input type="text" id="category" name="category" placeholder="Service category (e.g. tutoring, project help)" required>
-    
-            <label for="price">Price</label>
-            <input type="number" id="price" name="price" placeholder="Price for the service" step="0.01" required>
     
             <button type="submit">Post Service</button>
         </form>

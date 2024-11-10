@@ -9,6 +9,21 @@
 <body>
     <header>
         <h1>Your Service Posts</h1>
+        <nav>
+            <ul>
+                <li><a href="/university">University Students</a></li>
+                <li><a href="/supply">Supply</a></li>
+                <li><a href="/highschool">High School Students</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </header>
     
     <main>
@@ -30,5 +45,9 @@
             <p>No posts to display.</p>
         {% endif %}
     </main>
+    
+    <footer>
+        <p>&copy; 2023 Your Website</p>
+    </footer>
 </body>
 </html>

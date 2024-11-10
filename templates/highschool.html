@@ -14,6 +14,14 @@
                 <li><a href="/university">University Students</a></li>
                 <li><a href="/supply">Supply</a></li>
                 <li><a href="/highschool">High School Students</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="/profile">Your Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -25,6 +33,24 @@
     
             <button type="submit">Search</button>
         </form> 
+        
+       
+        <h2>Request a Service</h2>
+        
+            <form action="/add_demand" method="POST">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+        
+                <label for="description">Description</label>
+                <textarea id="description" name="description" required></textarea>
+        
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+        
+                <button type="submit">Submit Request</button>
+            </form>
+      
+        
     </main>
 
     <footer>

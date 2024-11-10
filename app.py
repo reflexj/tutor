@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -16,6 +17,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
+
 # Define User model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,8 +33,10 @@ class ServicePost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    category = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Float, nullable=False)
+    subject = db.Column(db.String(100), nullable=False)  # Subject field
+    university = db.Column(db.String(100), nullable=False)  # University field
+    semester = db.Column(db.String(50), nullable=False)  # Semester field
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
@@ -71,7 +77,6 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -92,7 +97,6 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    # Query all posts by the logged-in user
     posts = ServicePost.query.filter_by(user_id=current_user.id).all()
     return render_template('profile.html', posts=posts)
 
@@ -106,7 +110,6 @@ def highschool():
 
 @app.route('/supply')
 def supply():
-    # Query all services from the database
     services = ServicePost.query.all()
     return render_template('supply.html', services=services)
 
@@ -122,10 +125,20 @@ def service_detail(service_id):
 def add_service():
     title = request.form['title']
     description = request.form['description']
-    category = request.form['category']
     price = float(request.form['price'])
+    subject = request.form['subject']  # Subject input
+    university = request.form['university']  # University input
+    semester = request.form['semester']  # Semester input
 
-    new_post = ServicePost(title=title, description=description, category=category, price=price, author=current_user)
+    new_post = ServicePost(
+        title=title, 
+        description=description, 
+        price=price, 
+        subject=subject, 
+        university=university,
+        semester=semester,
+        author=current_user
+    )
     db.session.add(new_post)
     db.session.commit()
     return redirect(url_for('supply'))
@@ -136,7 +149,7 @@ def add_service():
 def delete_post(post_id):
     post = ServicePost.query.get_or_404(post_id)
     if post.author != current_user:
-        abort(403)  # Prevents deletion if the current user is not the author
+        abort(403)
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('profile'))
@@ -144,12 +157,40 @@ def delete_post(post_id):
 # Route for searching services
 @app.route('/search_results', methods=['GET'])
 def search_results():
-    category = request.args.get('category')
-    results = ServicePost.query.filter(ServicePost.category.like(f"%{category}%")).all()
+    subject = request.args.get('subject')
+    results = ServicePost.query.filter(ServicePost.subject.like(f"%{subject}%")).all()
     return render_template('search_results.html', results=results)
 
+# Define DemandPost model for high school student requests
+class DemandPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(100), nullable=False)  # Subject of demand
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<DemandPost {self.title}>'
+
+@app.route('/add_demand', methods=['POST'])
+@login_required
+def add_demand():
+    title = request.form['title']
+    description = request.form['description']
+    subject = request.form['subject']
+
+    new_demand = DemandPost(
+        title=title,
+        description=description,
+        subject=subject,
+        user_id=current_user.id
+    )
+    db.session.add(new_demand)
+    db.session.commit()
+    return redirect(url_for('highschool'))
+
+
+
+
 if __name__ == "__main__":
-    # Create the database tables if they don't exist yet
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
