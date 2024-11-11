@@ -11,10 +11,10 @@
         <h1>Search Results</h1>
         <nav>
             <ul>
-                <li><a href="/university">University Students</a></li>
-                <li><a href="/supply">Supply</a></li>
-                <li><a href="/highschool">High School Students</a></li>
+                <li><a href="/supply">Angebot</a></li>
                 <li><a href="/requests">Requests</a></li>
+                <li><a href="/university">Anbieten</a></li>
+                <li><a href="/highschool">Nachfragen</a></li>
                 
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
@@ -28,20 +28,22 @@
     </header>
     
     <main>
-        {% if results %}
-            <ul>
-                {% for post in results %}
-                    <li>
-                        <h3>{{ post.title }}</h3>
-                        <p><strong>Subject:</strong> {{ post.subject }}</p>
-                        <p><strong>Price:</strong> ${{ post.price }}</p>
-                        <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No services found matching your query.</p>
-        {% endif %}
+        <form>
+            {% if results %}
+                <ul>
+                    {% for post in results %}
+                        <li>
+                            <h3>{{ post.title }}</h3>
+                            <p><strong>Subject:</strong> {{ post.subject }}</p>
+                            <p><strong>Price:</strong> ${{ post.price }}</p>
+                            <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No services found matching your query.</p>
+            {% endif %}
+        </form>
     </main>
 
     <footer>

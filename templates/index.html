@@ -8,13 +8,13 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to the Student Interaction Website</h1>
+        <h1>Student Interaction Website</h1>
         <nav>
             <ul>
-                <li><a href="/university">University Students</a></li>
-                <li><a href="/supply">Supply</a></li>
-                <li><a href="/highschool">High School Students</a></li>
+                <li><a href="/supply">Angebot</a></li>
                 <li><a href="/requests">Requests</a></li>
+                <li><a href="/university">Anbieten</a></li>
+                <li><a href="/highschool">Nachfragen</a></li>
                 
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
@@ -28,15 +28,19 @@
     </header>
 
     <main>
-        <section>
-            <h2>About Us</h2>
-            <p>Welcome to the Student Interaction Website, a platform where university and high school students can interact, share services, and connect with each other.</p>
-        </section>
-        
-        <section>
-            <h2>How It Works</h2>
-            <p>Students can post their services and browse services offered by others. Whether you're offering tutoring, freelance work, or just looking to collaborate, this is the place for you!</p>
-        </section>
+        <form>
+            <section>
+                <h2>About Us</h2>
+                <p>Welcome to the Student Interaction Website, a platform where university and high school students can interact, share services, and connect with each other.</p>
+            </section>
+        </form>
+      
+        <form>
+            <section>
+                <h2>How It Works</h2>
+                <p>Students can post their services and browse services offered by others. Whether you're offering tutoring, freelance work, or just looking to collaborate, this is the place for you!</p>
+            </section>
+         </form>
     </main>
 
     <footer>

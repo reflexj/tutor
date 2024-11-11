@@ -11,10 +11,10 @@
         <h1>Search Available Services</h1>
         <nav>
             <ul>
-                <li><a href="/university">University Students</a></li>
-                <li><a href="/supply">Supply</a></li>
-                <li><a href="/highschool">High School Students</a></li>
+                <li><a href="/supply">Angebot</a></li>
                 <li><a href="/requests">Requests</a></li>
+                <li><a href="/university">Anbieten</a></li>
+                <li><a href="/highschool">Nachfragen</a></li>
                 
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
@@ -31,9 +31,8 @@
         <form method="get" action="{{ url_for('search_results') }}">
             <input type="text" name="query" placeholder="Search services by title or subject" value="{{ request.args.get('query', '') }}">
             <button type="submit">Search</button>
-        </form>
 
-        {% if results %}
+            {% if results %}
             <ul>
                 {% for post in results %}
                     <li>
@@ -47,11 +46,14 @@
         {% else %}
             <p>No services found matching your query.</p>
         {% endif %}
-        
-       
-        <h2>Request a Service</h2>
-        
+        </form>
+    
+           
+     
             <form action="/add_demand" method="POST">
+                
+             <h2>Request a Service</h2>
+             
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" required>
         

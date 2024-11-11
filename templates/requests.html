@@ -11,10 +11,10 @@
         <h1>Service Requests</h1>
         <nav>
             <ul>
-                <li><a href="/university">University Students</a></li>
-                <li><a href="/supply">Supply</a></li>
-                <li><a href="/highschool">High School Students</a></li>
+                <li><a href="/supply">Angebot</a></li>
                 <li><a href="/requests">Requests</a></li>
+                <li><a href="/university">Anbieten</a></li>
+                <li><a href="/highschool">Nachfragen</a></li>
 
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
@@ -28,6 +28,7 @@
     </header>
     
     <main>
+        <form>
         {% if requests %}
             <ul>
                 {% for request in requests %}
@@ -43,6 +44,7 @@
         {% endif %}
 
         <a href="{{ url_for('requests') }}">View All Requests</a>
+    </form>
 
     </main>
 
