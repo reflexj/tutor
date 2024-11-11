@@ -27,7 +27,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     posts = db.relationship('ServicePost', backref='user', lazy=True)
-    demand_posts = db.relationship('DemandPost', backref='user', lazy=True)  # Renamed from 'demands' to 'demand_posts'
 
 # Define ServicePost model (University Student Services)
 class ServicePost(db.Model):
@@ -42,20 +41,6 @@ class ServicePost(db.Model):
 
     def __repr__(self):
         return f'<ServicePost {self.title}>'
-
-# Define DemandPost model (High School Student Requests)
-class DemandPost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200), nullable=False)
-    subject = db.Column(db.String(100), nullable=False)
-    grade = db.Column(db.String(20), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    author = db.relationship('User', backref='demand_posts_reverse')  # Updated backref to match the new property name
-
-    def __repr__(self):
-        return f'<DemandPost {self.title}>'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -112,9 +97,10 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    posts = ServicePost.query.filter_by(user_id=current_user.id).all()
-    demand_posts = DemandPost.query.filter_by(user_id=current_user.id).all()  # Updated to 'demand_posts'
-    return render_template('profile.html', posts=posts, demand_posts=demand_posts)
+    service_posts = ServicePost.query.filter_by(user_id=current_user.id).all()
+    request_posts = RequestPost.query.filter_by(user_id=current_user.id).all()
+    return render_template('profile.html', service_posts=service_posts, request_posts=request_posts)
+
 
 @app.route('/university')
 def university():
@@ -124,12 +110,12 @@ def university():
 def highschool():
     return render_template('highschool.html')
 
-@app.route('/lookingfor')
-def looking_for():
-    # Fetch both university services and high school demands
-    services = ServicePost.query.all()
-    demand_posts = DemandPost.query.all()  # Updated to 'demand_posts'
-    return render_template('lookingfor.html', services=services, demand_posts=demand_posts)
+@app.route('/supply')
+def supply():
+    # Fetch all the service posts
+    posts = ServicePost.query.all()
+    return render_template('supply.html', posts=posts)
+
 
 # Route for individual service pages
 @app.route('/service/<int:service_id>')
@@ -159,7 +145,7 @@ def add_service():
     )
     db.session.add(new_post)
     db.session.commit()
-    return redirect(url_for('looking_for'))
+    return redirect(url_for('supply'))
 
 # Route for deleting a post
 @app.route('/delete_post/<int:post_id>', methods=['POST'])
@@ -175,31 +161,81 @@ def delete_post(post_id):
 # Route for searching services
 @app.route('/search_results', methods=['GET'])
 def search_results():
-    subject = request.args.get('subject')
-    results = ServicePost.query.filter(ServicePost.subject.like(f"%{subject}%")).all()
+    query = request.args.get('query')  # Get the search term from the URL (query parameter)
+    
+    if query:
+        results = ServicePost.query.filter(
+            (ServicePost.title.ilike(f"%{query}%")) |  # Match title
+            (ServicePost.subject.ilike(f"%{query}%"))  # Or match subject
+        ).all()
+    else:
+        results = ServicePost.query.all()  # If no query, show all results
+    
     return render_template('search_results.html', results=results)
 
-# Route to handle high school demand submissions
+
+
+#Demand side Deletable if need 
+
+class RequestPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    # Create a relationship with the User model
+    user = db.relationship('User', backref=db.backref('requests', lazy=True))
+
+    def __repr__(self):
+        return f'<RequestPost {self.title}>'
+
+
 @app.route('/add_demand', methods=['POST'])
 @login_required
 def add_demand():
     title = request.form['title']
     description = request.form['description']
     subject = request.form['subject']
-    grade = request.form['grade']
-    price = float(request.form['price'])
 
-    new_demand = DemandPost(
+    # Create a new RequestPost and associate it with the logged-in user
+    new_request = RequestPost(
         title=title,
         description=description,
         subject=subject,
-        grade=grade,
-        price=price,
-        user=current_user
+        user_id=current_user.id  # Link the request to the logged-in user
     )
-    db.session.add(new_demand)
+
+    db.session.add(new_request)
     db.session.commit()
-    return redirect(url_for('looking_for'))
+
+    flash('Your request has been submitted successfully!', 'success')
+    return redirect(url_for('requests'))  # Redirect to the requests page after submission
+
+
+@app.route('/requests')
+def requests():
+    requests = RequestPost.query.all()  # Get all the requests
+    return render_template('requests.html', requests=requests)
+
+
+@app.route('/delete_request/<int:request_id>', methods=['POST'])
+@login_required
+def delete_request(request_id):
+    request_to_delete = RequestPost.query.get_or_404(request_id)
+
+    # Ensure the logged-in user is the one who created the request
+    if request_to_delete.user_id != current_user.id:
+        abort(403)  # Forbidden if the user tries to delete someone else's request
+
+    db.session.delete(request_to_delete)
+    db.session.commit()
+
+    flash('Your request has been deleted.', 'success')
+    return redirect(url_for('profile'))
+
+
+#demandside until here
 
 if __name__ == "__main__":
     app.run(debug=True)

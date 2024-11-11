@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ service.title }}</title>
+    <title>Service Requests</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>{{ service.title }}</h1>
+        <h1>Service Requests</h1>
         <nav>
             <ul>
                 <li><a href="/university">University Students</a></li>
                 <li><a href="/supply">Supply</a></li>
                 <li><a href="/highschool">High School Students</a></li>
                 <li><a href="/requests">Requests</a></li>
-                
+
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -28,17 +28,26 @@
     </header>
     
     <main>
-        
-        <!-- Additional details for university students -->
-        <p><strong>Subject:</strong> {{ service.subject }}</p>
-        <p><strong>University:</strong> {{ service.university }}</p>
-        <p><strong>Semester:</strong> {{ service.semester }}</p>
-        <p><strong>Price:</strong> ${{ service.price }}</p>
-        <p><strong>Description:</strong> {{ service.description }}</p>
+        {% if requests %}
+            <ul>
+                {% for request in requests %}
+                    <li>
+                        <h3>{{ request.title }}</h3>
+                        <p><strong>Subject:</strong> {{ request.subject }}</p>
+                        <p><strong>Description:</strong> {{ request.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No requests available.</p>
+        {% endif %}
+
+        <a href="{{ url_for('requests') }}">View All Requests</a>
+
     </main>
 
     <footer>
-        <p>&copy; 2024 Student Interaction Website</p>
+        <p>&copy; 2023 Your Website</p>
     </footer>
 </body>
 </html>

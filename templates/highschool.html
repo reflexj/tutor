@@ -14,6 +14,7 @@
                 <li><a href="/university">University Students</a></li>
                 <li><a href="/supply">Supply</a></li>
                 <li><a href="/highschool">High School Students</a></li>
+                <li><a href="/requests">Requests</a></li>
                 
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
@@ -27,12 +28,25 @@
     </header>
     
     <main>
-        <form action="/search_results" method="GET">
-            <label for="category">Category</label>
-            <input type="text" id="category" name="category" placeholder="Enter category (e.g. math, programming)" required>
-    
+        <form method="get" action="{{ url_for('search_results') }}">
+            <input type="text" name="query" placeholder="Search services by title or subject" value="{{ request.args.get('query', '') }}">
             <button type="submit">Search</button>
-        </form> 
+        </form>
+
+        {% if results %}
+            <ul>
+                {% for post in results %}
+                    <li>
+                        <h3>{{ post.title }}</h3>
+                        <p><strong>Subject:</strong> {{ post.subject }}</p>
+                        <p><strong>Price:</strong> ${{ post.price }}</p>
+                        <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No services found matching your query.</p>
+        {% endif %}
         
        
         <h2>Request a Service</h2>

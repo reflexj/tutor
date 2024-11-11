@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ service.title }}</title>
+    <title>Search Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>{{ service.title }}</h1>
+        <h1>Search Results</h1>
         <nav>
             <ul>
                 <li><a href="/university">University Students</a></li>
@@ -28,17 +28,24 @@
     </header>
     
     <main>
-        
-        <!-- Additional details for university students -->
-        <p><strong>Subject:</strong> {{ service.subject }}</p>
-        <p><strong>University:</strong> {{ service.university }}</p>
-        <p><strong>Semester:</strong> {{ service.semester }}</p>
-        <p><strong>Price:</strong> ${{ service.price }}</p>
-        <p><strong>Description:</strong> {{ service.description }}</p>
+        {% if results %}
+            <ul>
+                {% for post in results %}
+                    <li>
+                        <h3>{{ post.title }}</h3>
+                        <p><strong>Subject:</strong> {{ post.subject }}</p>
+                        <p><strong>Price:</strong> ${{ post.price }}</p>
+                        <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No services found matching your query.</p>
+        {% endif %}
     </main>
 
     <footer>
-        <p>&copy; 2024 Student Interaction Website</p>
+        <p>&copy; 2023 Your Website</p>
     </footer>
 </body>
 </html>
