@@ -26,9 +26,10 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    posts = db.relationship('ServicePost', backref='author', lazy=True)
+    posts = db.relationship('ServicePost', backref='user', lazy=True)
+    demand_posts = db.relationship('DemandPost', backref='user', lazy=True)  # Renamed from 'demands' to 'demand_posts'
 
-# Define ServicePost model
+# Define ServicePost model (University Student Services)
 class ServicePost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -41,6 +42,20 @@ class ServicePost(db.Model):
 
     def __repr__(self):
         return f'<ServicePost {self.title}>'
+
+# Define DemandPost model (High School Student Requests)
+class DemandPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(100), nullable=False)
+    grade = db.Column(db.String(20), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref='demand_posts_reverse')  # Updated backref to match the new property name
+
+    def __repr__(self):
+        return f'<DemandPost {self.title}>'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -98,7 +113,8 @@ def logout():
 @login_required
 def profile():
     posts = ServicePost.query.filter_by(user_id=current_user.id).all()
-    return render_template('profile.html', posts=posts)
+    demand_posts = DemandPost.query.filter_by(user_id=current_user.id).all()  # Updated to 'demand_posts'
+    return render_template('profile.html', posts=posts, demand_posts=demand_posts)
 
 @app.route('/university')
 def university():
@@ -112,8 +128,8 @@ def highschool():
 def looking_for():
     # Fetch both university services and high school demands
     services = ServicePost.query.all()
-    demands = DemandPost.query.all()
-    return render_template('lookingfor.html', services=services, demands=demands)
+    demand_posts = DemandPost.query.all()  # Updated to 'demand_posts'
+    return render_template('lookingfor.html', services=services, demand_posts=demand_posts)
 
 # Route for individual service pages
 @app.route('/service/<int:service_id>')
@@ -139,18 +155,18 @@ def add_service():
         subject=subject, 
         university=university,
         semester=semester,
-        author=current_user
+        user=current_user
     )
     db.session.add(new_post)
     db.session.commit()
-    return redirect(url_for('supply'))
+    return redirect(url_for('looking_for'))
 
 # Route for deleting a post
 @app.route('/delete_post/<int:post_id>', methods=['POST'])
 @login_required
 def delete_post(post_id):
     post = ServicePost.query.get_or_404(post_id)
-    if post.author != current_user:
+    if post.user != current_user:
         abort(403)
     db.session.delete(post)
     db.session.commit()
@@ -163,17 +179,6 @@ def search_results():
     results = ServicePost.query.filter(ServicePost.subject.like(f"%{subject}%")).all()
     return render_template('search_results.html', results=results)
 
-# Define DemandPost model for high school student requests
-class DemandPost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200), nullable=False)
-    subject = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        return f'<DemandPost {self.title}>'
-
 # Route to handle high school demand submissions
 @app.route('/add_demand', methods=['POST'])
 @login_required
@@ -181,12 +186,16 @@ def add_demand():
     title = request.form['title']
     description = request.form['description']
     subject = request.form['subject']
+    grade = request.form['grade']
+    price = float(request.form['price'])
 
     new_demand = DemandPost(
         title=title,
         description=description,
         subject=subject,
-        user_id=current_user.id
+        grade=grade,
+        price=price,
+        user=current_user
     )
     db.session.add(new_demand)
     db.session.commit()
