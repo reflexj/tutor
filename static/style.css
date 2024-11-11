@@ -17,7 +17,7 @@ header {
 
 nav {
     display: flex;            /* Make nav a flex container */
-    justify-content: center;   /* Center its contents horizontally */
+    justify-content: center;  /* Center its contents horizontally */
 }
 
 nav ul {
@@ -81,4 +81,57 @@ form button {
 
 form button:hover {
     background-color: #45a049;
+}
+
+/* Mobile-first styles (for small screens) */
+@media (max-width: 768px) {
+    body {
+        background-color: #eaeaea;  /* Example: Change background color for small screens */
+    }
+
+    nav {
+        flex-direction: column; /* Stack the nav items vertically on mobile */
+        align-items: center;    /* Center the items horizontally */
+    }
+
+    nav ul {
+        display: flex;
+        flex-direction: column; /* Stack the list items vertically */
+        padding: 0;
+        gap: 15px;  /* Add space between items */
+        text-align: center;  /* Align the text to center */
+    }
+
+    nav ul li {
+        margin: 0;
+    }
+
+    nav ul li a {
+        font-size: 18px;  /* Adjust font size for better readability on mobile */
+        padding: 10px;
+        width: 100%;  /* Make the links take full width for easy tapping */
+        text-align: center;
+    }
+}
+
+/* Additional styles for tablet and larger devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 20px;
+    }
+
+    .col-md-4 {
+        width: 33.33%;  /* 3 columns on tablet */
+    }
+}
+
+/* For larger screens like desktops */
+@media (min-width: 1025px) {
+    .container {
+        max-width: 1200px;
+    }
+
+    .col-md-4 {
+        width: 33.33%;  /* 3 columns on desktop */
+    }
 }
