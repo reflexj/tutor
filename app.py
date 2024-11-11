@@ -222,17 +222,15 @@ def requests():
 @app.route('/delete_request/<int:request_id>', methods=['POST'])
 @login_required
 def delete_request(request_id):
-    request_to_delete = RequestPost.query.get_or_404(request_id)
-
-    # Ensure the logged-in user is the one who created the request
-    if request_to_delete.user_id != current_user.id:
-        abort(403)  # Forbidden if the user tries to delete someone else's request
-
-    db.session.delete(request_to_delete)
-    db.session.commit()
-
-    flash('Your request has been deleted.', 'success')
+    request_post = RequestPost.query.get_or_404(request_id)
+    
+    # Ensure the current user is the owner of the post
+    if request_post.user_id == current_user.id:
+        db.session.delete(request_post)
+        db.session.commit()
+    
     return redirect(url_for('profile'))
+
 
 
 #demandside until here

@@ -28,14 +28,18 @@
     </header>
     
     <main>
-        {% if posts %}
+        <section>
+            <h2>Your Service Posts</h2>
+            {% if service_posts %}
             <ul>
-                {% for post in posts %}
+                {% for post in service_posts %}
                     <li>
                         <h2>{{ post.title }}</h2>
                         <p>{{ post.description }}</p>
-                        <p>Category: {{ post.category }}</p>
                         <p>Price: ${{ post.price }}</p>
+                        <p>Subject: {{ post.subject }}</p>
+                        <p>University: {{ post.university }}</p>
+                        <p>Semester: {{ post.semester }}</p>
                         <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
                             <button type="submit">Delete</button>
                         </form>
@@ -43,24 +47,31 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Not posted any services yet</p>
+            <p>You haven't posted any services yet.</p>
         {% endif %}
+        
+        </section>
 
-        <h2>Your Request Posts</h2>
-        {% if request_posts %}
-            <ul>
-                {% for request in request_posts %}
-                    <li>
-                        <h3>{{ request.title }}</h3>
-                        <p>{{ request.subject }}</p>
-                        <p>{{ request.description }}</p>
-                        <a href="{{ url_for('delete_request', request_id=request.id) }}">Delete</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>You have not submitted any requests yet.</p>
-        {% endif %}
+        <section>
+            <h2>Your Request Posts</h2>
+            {% if request_posts %}
+                <ul>
+                    {% for request in request_posts %}
+                        <li>
+                            <h3>{{ request.title }}</h3>
+                            <p>{{ request.subject }}</p>
+                            <p>{{ request.description }}</p>
+                            <form action="{{ url_for('delete_request', request_id=request.id) }}" method="POST">
+                                <button type="submit">Delete</button>
+                            </form>
+                            
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You have not submitted any requests yet.</p>
+            {% endif %}
+        </section>
     </main>
     
     <footer>
