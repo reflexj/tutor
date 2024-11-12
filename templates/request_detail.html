@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Service Requests</title>
+    <title>{{ request.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Service Requests</h1>
+        <h1>{{ request.title }}</h1>
         <nav>
             <ul>
                 <li><a href="/supply">Angebot</a></li>
                 <li><a href="/requests">Requests</a></li>
                 <li><a href="/university">Anbieten</a></li>
                 <li><a href="/highschool">Nachfragen</a></li>
+
                 {% if current_user.is_authenticated %}
                     <li><a href="/profile">Your Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -28,24 +29,18 @@
     
     <main>
         <form>
-            {% if requests %}
-                <ul>
-                    {% for request in requests %}
-                        <li>
-                            <h3><a href="{{ url_for('request_detail', request_id=request.id) }}">{{ request.title }}</a></h3>
-                            <p><strong>Subject:</strong> {{ request.subject }}</p>
-                            <p><strong>Description:</strong> {{ request.description }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No requests available.</p>
-            {% endif %}
+            <p><strong>Title:</strong> {{ request.title }}</p>
+            <p><strong>Subject:</strong> {{ request.subject }}</p>
+            <p><strong>Description:</strong> {{ request.description }}</p>
+            <p><strong>Price:</strong> {{ request.price }}</p>
+            <p><strong>Contact</strong> {{ request.contact  }}</p>
+            <p><strong>Additional Information:</strong> {{ request.additional_information }}</p>
+
         </form>
     </main>
 
     <footer>
-        <p>&copy; 2023 Your Website</p>
+        <p>&copy; 2024 Student Interaction Website</p>
     </footer>
 </body>
 </html>

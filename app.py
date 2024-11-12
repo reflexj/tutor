@@ -185,9 +185,10 @@ class RequestPost(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     subject = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.String(100), nullable=False)
+    additional_information = db.Column(db.String(200), nullable=True)
+    contact =db.Column(db.String(100), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    # Create a relationship with the User model
     user = db.relationship('User', backref=db.backref('requests', lazy=True))
 
     def __repr__(self):
@@ -200,20 +201,26 @@ def add_demand():
     title = request.form['title']
     description = request.form['description']
     subject = request.form['subject']
+    price = request.form.get('price')
+    contact = request.form.get('contact')
+    additional_information = request.form.get('additional_info')
 
-    # Create a new RequestPost and associate it with the logged-in user
     new_request = RequestPost(
         title=title,
         description=description,
         subject=subject,
-        user_id=current_user.id  # Link the request to the logged-in user
+        price=price,
+        contact=contact,
+        additional_information=additional_information,
+        user_id=current_user.id
     )
 
     db.session.add(new_request)
     db.session.commit()
 
     flash('Your request has been submitted successfully!', 'success')
-    return redirect(url_for('requests'))  # Redirect to the requests page after submission
+    return redirect(url_for('requests'))
+
 
 
 @app.route('/requests')
@@ -233,6 +240,12 @@ def delete_request(request_id):
         db.session.commit()
     
     return redirect(url_for('profile'))
+
+@app.route('/request/<int:request_id>')
+def request_detail(request_id):
+    request = RequestPost.query.get_or_404(request_id)
+    return render_template('request_detail.html', request=request)
+
 
 
 
