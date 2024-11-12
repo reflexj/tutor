@@ -40,6 +40,8 @@ class ServicePost(db.Model):
     subject = db.Column(db.String(100), nullable=False)
     university = db.Column(db.String(100), nullable=False)
     semester = db.Column(db.String(50), nullable=False)
+    contact =db.Column(db.String(100), nullable = False)
+    additional_info =db.Column(db.String(200), nullable = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
@@ -97,12 +99,6 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/profile')
-@login_required
-def profile():
-    service_posts = ServicePost.query.filter_by(user_id=current_user.id).all()
-    request_posts = RequestPost.query.filter_by(user_id=current_user.id).all()
-    return render_template('profile.html', service_posts=service_posts, request_posts=request_posts)
 
 
 @app.route('/university')
@@ -136,6 +132,9 @@ def add_service():
     subject = request.form['subject']
     university = request.form['university']
     semester = request.form['semester']
+    contact = request.form['contact']
+    additional_info = request.form.get('additional_info')
+
 
     new_post = ServicePost(
         title=title, 
@@ -144,6 +143,8 @@ def add_service():
         subject=subject, 
         university=university,
         semester=semester,
+        contact = contact,
+        additional_info = additional_info,
         user=current_user
     )
     db.session.add(new_post)
@@ -243,13 +244,18 @@ def delete_request(request_id):
 
 @app.route('/request/<int:request_id>')
 def request_detail(request_id):
-    request = RequestPost.query.get_or_404(request_id)
-    return render_template('request_detail.html', request=request)
-
-
+    request_post = RequestPost.query.get_or_404(request_id)
+    return render_template('request_detail.html', request=request_post)
 
 
 #demandside until here
 
+@app.route('/profile')
+@login_required
+def profile():
+    service_posts = ServicePost.query.filter_by(user_id=current_user.id).all()
+    request_posts = RequestPost.query.filter_by(user_id=current_user.id).all()
+    return render_template('profile.html', service_posts=service_posts, request_posts=request_posts)
+
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
