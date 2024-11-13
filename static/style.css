@@ -1,3 +1,4 @@
+/* General Body and Layout Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -13,18 +14,24 @@ header {
     color: white;
     text-align: center;
     padding: 15px;
+    position: relative; /* Ensures auth-links can be positioned absolutely within header */
 }
 
 nav {
-    display: flex;            /* Make nav a flex container */
-    justify-content: center;  /* Center its contents horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 nav ul {
     list-style-type: none;
-    padding: 0;
-    display: flex;             /* Make ul a flex container */
-    gap: 30px;                 /* Add space between list items */
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 nav ul li {
@@ -38,7 +45,30 @@ nav ul li a {
     text-align: center;
 }
 
+/* Auth Links Styling */
+.auth-links {
+    display: flex;
+    gap: 15px;
+    background-color: #45a049;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-left: auto;  /* Pushes to the right */
+    position: absolute;  /* Makes it position independently */
+    right: 15px;  /* 15px from the right edge */
+    top: 15px;  /* Aligns with the top of the header */
+}
 
+.auth-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-links a:hover {
+    color: #134215;
+}
+
+/* Main Content Styling */
 main {
     flex: 1;
 }
@@ -121,6 +151,23 @@ form button:hover {
         font-size: 18px;  /* Adjust font size for better readability on mobile */
         padding: 10px;
         width: 100%;  /* Make the links take full width for easy tapping */
+        text-align: center;
+    }
+
+    /* Mobile styles for auth-links */
+    .auth-links {
+        position: static;  /* Reset position for mobile */
+        margin-left: 0;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .auth-links a {
+        font-size: 16px;
+        padding: 10px 0;
+        width: 100%;
         text-align: center;
     }
 }

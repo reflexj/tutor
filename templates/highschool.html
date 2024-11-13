@@ -8,23 +8,24 @@
 </head>
 <body>
     <header>
-        <h1>Search Available Services</h1>
+        <h1>Request a service</h1>
         <nav>
             <ul>
                 <li><a href="/supply">Services</a></li>
                 <li><a href="/requests">Needs</a></li>
                 <li><a href="/university">Offer</a></li>
                 <li><a href="/highschool">Request</a></li>
-                
-                {% if current_user.is_authenticated %}
-                    <li><a href="/profile">Your Profile</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
-                {% endif %}
             </ul>
         </nav>
+        <section class="auth-links">
+            {% if current_user.is_authenticated %}
+                <a href="/profile">Your Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </section>
     </header>
     
     <main>    
