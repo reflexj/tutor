@@ -111,9 +111,10 @@ def highschool():
 
 @app.route('/supply')
 def supply():
-    # Fetch all the service posts
-    posts = ServicePost.query.all()
+    # Fetch all the service posts, including the username
+    posts = ServicePost.query.join(User).add_columns(User.username).all()
     return render_template('supply.html', posts=posts)
+
 
 
 # Route for individual service pages
@@ -226,8 +227,10 @@ def add_demand():
 
 @app.route('/requests')
 def requests():
-    requests = RequestPost.query.all()  # Get all the requests
+    # Fetch all the request posts, including the username
+    requests = RequestPost.query.join(User).add_columns(User.username).all()
     return render_template('requests.html', requests=requests)
+
 
 
 @app.route('/delete_request/<int:request_id>', methods=['POST'])

@@ -55,11 +55,12 @@
         <form>
                 {% if posts %}
                 <ul>
-                    {% for post in posts %}
+                    {% for post, username in posts %}
                         <li>
                             <h3>{{ post.title }}</h3>
                             <p><strong>Subject:</strong> {{ post.subject }}</p>
                             <p><strong>Price:</strong> ${{ post.price }}</p>
+                            <p><strong>Created by:</strong> {{ username }}</p>
                             <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
                         </li>
                     {% endfor %}
