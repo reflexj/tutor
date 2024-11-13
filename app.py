@@ -88,7 +88,7 @@ def login():
         user = User.query.filter_by(email=request.form['email']).first()
         if user and bcrypt.check_password_hash(user.password, request.form['password']):
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('profile'))
         else:
             flash('Login unsuccessful. Please check email and password', 'danger')
     return render_template('login.html')
@@ -163,8 +163,8 @@ def delete_post(post_id):
     return redirect(url_for('profile'))
 
 # Route for searching services
-@app.route('/search_results', methods=['GET'])
-def search_results():
+@app.route('/search_results_supply', methods=['GET'])
+def search_results_supply():
     query = request.args.get('query')  # Get the search term from the URL (query parameter)
     
     if query:
@@ -175,7 +175,7 @@ def search_results():
     else:
         results = ServicePost.query.all()  # If no query, show all results
     
-    return render_template('search_results.html', results=results)
+    return render_template('search_results_supply.html', results=results)
 
 
 
@@ -246,6 +246,20 @@ def delete_request(request_id):
 def request_detail(request_id):
     request_post = RequestPost.query.get_or_404(request_id)
     return render_template('request_detail.html', request=request_post)
+
+@app.route('/search_results_requests', methods=['GET'])
+def search_results_requests():
+    query = request.args.get('query')
+    if query:
+        results = RequestPost.query.filter(
+            (RequestPost.title.ilike(f"%{query}%")) |
+            (RequestPost.subject.ilike(f"%{query}%"))
+        ).all()
+    else:
+        results = RequestPost.query.all()
+    
+    return render_template('search_results_requests.html', results=results)
+
 
 
 #demandside until here

@@ -27,6 +27,29 @@
     </header>
     
     <main>
+        <!--Search Engine for requests-->
+
+        <form method="get" action="{{ url_for('search_results_requests') }}">
+            <input type="text" name="query" placeholder="Search Requests by title or subject" value="{{ request.args.get('query', '') }}">
+            <button type="submit">Search</button>
+
+            {% if results %}
+            <ul>
+                {% for post in results %}
+                    <li>
+                        <h3>{{ post.title }}</h3>
+                        <p><strong>Subject:</strong> {{ post.subject }}</p>
+                        <p><strong>Price:</strong> ${{ post.price }}</p>
+                        <a href="{{ url_for('request_detail', request_id=post.id) }}">View Details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No Requests found matching your query.</p>
+        {% endif %}
+        </form>
+        
+
         <form>
             {% if requests %}
                 <ul>

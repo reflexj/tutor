@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Supply Page</title>
+    <title>Request Search Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Available Services</h1>
+        <h1>Request Search Results</h1>
         <nav>
             <ul>
                 <li><a href="/supply">Angebot</a></li>
@@ -28,46 +28,22 @@
     </header>
     
     <main>
-
-        <!--Search Engine for Services-->
-
-        <form method="get" action="{{ url_for('search_results_supply') }}">
-            <input type="text" name="query" placeholder="Search services by title or subject" value="{{ request.args.get('query', '') }}">
-            <button type="submit">Search</button>
-
-            {% if results %}
-            <ul>
-                {% for post in results %}
-                    <li>
-                        <h3>{{ post.title }}</h3>
-                        <p><strong>Subject:</strong> {{ post.subject }}</p>
-                        <p><strong>Price:</strong> ${{ post.price }}</p>
-                        <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No services found matching your query.</p>
-        {% endif %}
-        </form>
-
-
         <form>
-                {% if posts %}
+            {% if results %}
                 <ul>
-                    {% for post in posts %}
+                    {% for post in results %}
                         <li>
                             <h3>{{ post.title }}</h3>
                             <p><strong>Subject:</strong> {{ post.subject }}</p>
-                            <p><strong>Price:</strong> ${{ post.price }}</p>
-                            <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
+                            <p><strong>Description:</strong> {{ post.description }}</p>
+                            <a href="{{ url_for('request_detail', request_id=post.id) }}">View Details</a>
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
-                <p>No services available.</p>
+                <p>No requests found matching your query.</p>
             {% endif %}
-        </form>    
+        </form>
     </main>
 
     <footer>
