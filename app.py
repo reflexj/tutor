@@ -267,12 +267,46 @@ def search_results_requests():
 
 #demandside until here
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    if request.method == 'POST':
+        # Retrieve the form data
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Check if the username or email already exists
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user and existing_user.id != current_user.id:
+            flash('Username already taken. Please choose a different one.', 'danger')
+            return redirect(url_for('profile'))
+        
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email and existing_email.id != current_user.id:
+            flash('Email already registered. Please choose a different one.', 'danger')
+            return redirect(url_for('profile'))
+
+        # Update the user's details
+        current_user.username = username
+        current_user.email = email
+        
+        # If the password is provided, hash it and update it
+        if password:
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            current_user.password = hashed_password
+
+        # Commit the changes to the database
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('profile'))
+
+    # Fetch the user's service and request posts
     service_posts = ServicePost.query.filter_by(user_id=current_user.id).all()
     request_posts = RequestPost.query.filter_by(user_id=current_user.id).all()
+
     return render_template('profile.html', service_posts=service_posts, request_posts=request_posts)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
