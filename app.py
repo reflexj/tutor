@@ -99,6 +99,9 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/createpost')
+def createpost():
+    return render_template('createpost.html')
 
 
 @app.route('/university')
@@ -114,6 +117,19 @@ def supply():
     # Fetch all the service posts, including the username
     posts = ServicePost.query.join(User).add_columns(User.username).all()
     return render_template('supply.html', posts=posts)
+
+@app.route('/requests')
+def requests():
+    # Fetch all the request posts, including the username
+    requests = RequestPost.query.join(User).add_columns(User.username).all()
+    return render_template('requests.html', requests=requests)
+
+@app.route('/allposts')
+def allposts():
+    posts = ServicePost.query.join(User).add_columns(User.username).all()
+    requests = RequestPost.query.join(User).add_columns(User.username).all()
+    return render_template('allposts.html', requests =requests, posts = posts)
+
 
 
 
@@ -224,12 +240,6 @@ def add_demand():
     return redirect(url_for('requests'))
 
 
-
-@app.route('/requests')
-def requests():
-    # Fetch all the request posts, including the username
-    requests = RequestPost.query.join(User).add_columns(User.username).all()
-    return render_template('requests.html', requests=requests)
 
 
 

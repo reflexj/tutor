@@ -11,10 +11,10 @@
         <h1>Request a service</h1>
         <nav>
             <ul>
+                <li><a href="/allposts">All posts</a></li>
                 <li><a href="/supply">Services</a></li>
-                <li><a href="/requests">Needs</a></li>
-                <li><a href="/university">Offer</a></li>
-                <li><a href="/highschool">Request</a></li>
+                <li><a href="/requests">Requests</a></li>
+                <li><a href="/createpost">Create Post</a></li>
             </ul>
         </nav>
         <section class="auth-links">
@@ -28,11 +28,21 @@
         </section>
     </header>
     
-    <main>    
-           
-            <form action="/add_demand" method="POST">
+    <main>  
+
+        <h2>What kind of post do you want to create?</h2>
+        <h1 id="trick">sdf</h1>
+
+   
+            <form id="info" action="/add_demand" method="POST">
+
+                <a href="/highschool">
+                    <button class="creat-button-request" type="button">Request</button>
+                  </a>
                 
-             <h2>Request a Service</h2>
+                  <a href="/university">
+                    <button class="creat-button-service" type="button">Service</button>
+                  </a>  
              
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" placeholder="Your Request titel" required>

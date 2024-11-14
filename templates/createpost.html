@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Student Interaction Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Student Interaction Website</h1>
+        <h1>Create Post</h1>
         <nav>
             <ul>
                 <li><a href="/allposts">All posts</a></li>
@@ -26,26 +26,19 @@
                 <a href="{{ url_for('register') }}">Register</a>
             {% endif %}
         </section>
+        
     </header>
 
     <main>
-        <form>
-            <section>
-                <h2>About Us</h2>
-                <p>Welcome to the Student Interaction Website, a platform where university and high school students can interact, share services, and connect with each other.</p>
-            </section>
-        </form>
-      
-        <form>
-            <section>
-                <h2>How It Works</h2>
-                <p>Students can post their services and browse services offered by others. Whether you're offering tutoring, freelance work, or just looking to collaborate, this is the place for you!</p>
-            </section>
-         </form>
-    </main>
+        <h2>What kind of post do you want to create?</h2>
 
-    <footer>
-        <p>&copy; 2024 Student Interaction Website</p>
-    </footer>
+        <a href="/highschool">
+            <button class="creat-button-request" type="button">Request</button>
+          </a>
+        
+          <a href="/university">
+            <button class="creat-button-service" type="button">Service</button>
+          </a>  
+    </main>
 </body>
 </html>

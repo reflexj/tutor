@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Service Requests</title>
+    <title>All Posts</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Service Requests</h1>
+        <h1>All Posts</h1>
         <nav>
             <ul>
                 <li><a href="/allposts">All posts</a></li>
@@ -30,33 +30,16 @@
     </header>
     
     <main>
-        <!--Search Engine for requests-->
-
-        <form method="get" action="{{ url_for('search_results_requests') }}">
-            <input type="text" name="query" placeholder="Search Requests by title or subject" value="{{ request.args.get('query', '') }}">
-            <button type="submit">Search</button>
-
-            {% if results %}
-            <ul>
-                {% for post in results %}
-                    <li>
-                        <h3>{{ post.title }}</h3>
-                        <p><strong>Subject:</strong> {{ post.subject }}</p>
-                        <p><strong>Price:</strong> ${{ post.price }}</p>
-                        <a href="{{ url_for('request_detail', request_id=post.id) }}">View Details</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No Requests found matching your query.</p>
-        {% endif %}
-        </form>
         
+        <!--All Requests-->
+            <form>
+                <h2>Requests</h2>
+            </form>
 
-        <form>
             {% if requests %}
                 <ul>
                     {% for request, username in requests %}
+                    <form>
                         <li>
                             <h3>{{ request.title }}</h3>
                             <p><strong>Subject:</strong> {{ request.subject }}</p>
@@ -64,12 +47,44 @@
                             <p><strong>Created by:</strong> {{ username }}</p>
                             <a href="{{ url_for('request_detail', request_id=request.id) }}">View Details</a>
                         </li>
+                    </form>
                     {% endfor %}
                 </ul>
             {% else %}
+            <form>
                 <p>No requests available.</p>
+            </form>
+                
             {% endif %}
-        </form>
+        
+
+        <!--All Services-->
+            <form>
+                <h2>Services</h2>
+            </form>
+
+                {% if posts %}
+                <ul>
+                    {% for post, username in posts %}
+
+                        <form>
+                            <li>
+                                <h3>{{ post.title }}</h3>
+                                <p><strong>Subject:</strong> {{ post.subject }}</p>
+                                <p><strong>Price:</strong> ${{ post.price }}</p>
+                                <p><strong>Created by:</strong> {{ username }}</p>
+                                <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
+                            </li>
+                        </form>
+
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <form>
+                    <p>No services available.</p>
+                </form>
+            {% endif %}
+           
     </main>
 
     <footer>
