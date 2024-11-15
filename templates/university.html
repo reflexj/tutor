@@ -34,21 +34,18 @@
     <main>
 
         <h2>What kind of post do you want to create?</h2>
-        <h1 id="trick">sdf</h1>
 
-
-
-        <form id="info" method="POST" action="/add_service">
-            
-
+        <div class="button-container">
             <a href="/highschool">
                 <button class="creat-button-request" type="button">Request</button>
-              </a>
+            </a>
             
-              <a href="/university">
+            <a href="/university">
                 <button class="creat-button-service" type="button">Service</button>
-              </a>  
-              
+            </a>  
+        </div>
+
+        <form id="info" method="POST" action="/add_service">  
             <label for="title">Service Title</label>
             <input type="text" id="title" name="title" placeholder="Enter service title" required>
 
@@ -78,7 +75,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Student Interaction Website</p>
+        <p>&copy; 2024 Students4Students</p>
     </footer>
 </body>
 </html>

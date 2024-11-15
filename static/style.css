@@ -50,10 +50,10 @@ nav ul li a {
     display: flex;
     gap: 15px;
     background-color: #50947d;
+    position: absolute;
     padding: 5px 15px;
     border-radius: 5px;
     margin-left: auto;  /* Pushes to the right */
-    position: absolute;  /* Makes it position independently */
     right: 15px;  /* 15px from the right edge */
     top: 15px;  /* Aligns with the top of the header */
 }
@@ -125,6 +125,48 @@ form button:hover {
     background-color: #1b8662;
 }
 
+h2 {
+    text-align: center;
+}
+
+/* Container for the buttons */
+.button-container {
+    display: flex;  /* Flexbox to align buttons next to each other */
+    justify-content: center;  /* Center the buttons horizontally */
+    gap: 10px;  /* Space between the buttons */
+    margin-top: 20px;  /* Space from the header */
+    margin-bottom: 30px;  /* Space before the form */
+}
+
+/* Common styling for the buttons (already defined in your code) */
+.creat-button-service,
+.creat-button-request {
+    background-color: #10513c;  /* Initial green color */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;  /* Rounded corners */
+    transition: background-color 0.3s ease;  /* Smooth transition on hover */
+}
+
+/* Hover effect for the buttons */
+.creat-button-service:hover, .creat-button-request:hover {
+    background-color: #1b8662;  /* Slightly lighter green on hover */
+}
+
+
+
+/* Style for the logo */
+header img {
+    max-height: 80px; /* Adjust size for the header */
+    object-fit: contain; /* Ensures proper resizing */
+    position: absolute;
+    top: 25px; 
+    left: 25px;
+}
+
 /* Mobile-first styles (for small screens) */
 @media (max-width: 768px) {
     body {
@@ -158,16 +200,16 @@ form button:hover {
     /* Mobile styles for auth-links */
     .auth-links {
         position: static;  /* Reset position for mobile */
-        margin-left: 120px;
+        margin-left: 22%;
         flex-direction: column;
         align-items: center;
-        width: 40%;
-        margin-top: 10px;
+        width: 50%;
+        margin-top: 15px;
     }
 
     .auth-links a {
-        font-size: 16px;
-        padding: 10px 0;
+        font-size: 18px;
+        padding: 5px 0;
         width: 100%;
         text-align: center;
     }
@@ -195,63 +237,6 @@ form button:hover {
     }
 }
 
-h2 {
-    text-align: center;
-}
-
-
-/* Common button styling */
-.creat-button-service {
-    background-color:#10513c;  /* Initial green color */
-    color: white;               /* White text color */
-    border: none;
-    padding: 15px 30px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;         /* Rounded corners */
-    transition: background-color 0.3s ease;  /* Smooth transition on hover */
-
-    position: absolute;
-    top: 25%;
-    left: 45%;
-    transform: translate(-50%, -50%)
-}
-
-.creat-button-request {
-    background-color: #10513c;  /* Initial green color */
-    color: white;               /* White text color */
-    border: none;
-    padding: 15px 30px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;         /* Rounded corners */
-    transition: background-color 0.3s ease;  /* Smooth transition on hover */
-
-    position: absolute;
-    top: 25%;
-    left: 55%;
-    transform: translate(-50%, -50%)
-
-}
-
-/* Hover effect for the buttons */
-.creat-button-service:hover, .creat-button-request:hover {
-    background-color: #1b8662;  /* Slightly lighter green on hover */
-}
-
-#trick {
-    color: #f4f4f4;
-}
-
-
-/* Style for the logo */
-header img {
-    max-height: 80px; /* Adjust size for the header */
-    object-fit: contain; /* Ensures proper resizing */
-    position: absolute;
-    top: 25px; 
-    left: 25px;
-}
 
 @media (max-width: 768px) {
     header img {

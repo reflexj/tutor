@@ -70,62 +70,49 @@ nav ul li a {
     transform: scale(1.1);
 }
 
-/* Main Content Styling */
+/* Main Content Layout */
 main {
     flex: 1;
-    display: flex; /* Make main content a flex container */
-    justify-content: space-between; /* Space between the two columns */
-    padding: 20px; /* Add some padding around */
+    display: flex; /* Use Flexbox to align columns */
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
 }
 
+
+/* Split layout for services and requests */
 .all_services, .all_requests {
-    width: 48%; /* Each div takes up about half of the available space */
-    background-color: white;
+    width: 48%; /* Each div takes up half the available space */
+    background-color: #10513c;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow effect */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
 }
 
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
+/* Container for all the post lists */
+.post-container {
+    display: flex;             /* Use Flexbox */
+    flex-direction: row;       /* Align items horizontally (default) */
+    flex-wrap: wrap;           /* Allow items to wrap onto the next line when they run out of space */
+    gap: 20px;                 /* Adds space between the <ul> elements */
+    margin: 20px 0;           /* Optional: Adds margin around the grid */
 }
 
-section {
-    text-align: center;
-    background-color: #fff;
-    max-width: 620px;
-    border-radius: 8px;
-    margin: 30px auto;
-    padding: 10px;
+.post-list {
+    list-style-type: none;     /* Removes default list bullets */
+    margin: 0;                 /* Removes default margin */
+    padding: 0;                /* Removes default padding */
+    width: 190px;              /* Adjust the width as needed */
+    background-color: #50947d; /* Optional: Adds background color */
+    border: 1px solid #fff;    /* Optional: Adds border */
+    border-radius: 10px;
+    padding: 10px;             /* Optional: Adds padding inside each list */
 }
-
-form {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
+.post-list li {
+    color: #fff;
 }
-
-form label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-form input, form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-
-/* Mobile-first styles (for small screens) */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     body {
         background-color: #eaeaea;  /* Example: Change background color for small screens */
@@ -158,16 +145,16 @@ form input, form textarea {
     /* Mobile styles for auth-links */
     .auth-links {
         position: static;  /* Reset position for mobile */
-        margin-left: 0;
+        margin-left: 22%;
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        margin-top: 10px;
+        width: 50%;
+        margin-top: 15px;
     }
 
     .auth-links a {
-        font-size: 16px;
-        padding: 10px 0;
+        font-size: 18px;
+        padding: 5px 0;
         width: 100%;
         text-align: center;
     }
@@ -178,8 +165,17 @@ form input, form textarea {
     }
 
     .all_services, .all_requests {
-        width: 100%; /* Full width on mobile */
-        margin-bottom: 20px; /* Add space between the divs */
+        width: 100%;  /* Take up full width on smaller screens */
+        margin-bottom: 20px; /* Adds space between the columns */
+    }
+
+    .post-container {
+        flex-direction: row;  /* Stack the posts vertically on mobile */
+        gap: 10px;  /* Smaller gap between posts */
+    }
+
+    .post-list {
+        width: 43%;  /* Full width on mobile screens */
     }
 }
 
@@ -207,8 +203,12 @@ form input, form textarea {
 
 h2 {
     text-align: center;
+    color:#333;
 }
 
+#no {
+    text-align: center;
+}
 
 .container {
     display: flex;
@@ -217,12 +217,14 @@ h2 {
     margin: 0 auto; /* Center the container */
 }
 
+/* Split layout for services and requests */
 #all_services, #all_requests {
-    width: 47%;  /* Each takes up almost half of the container's width */
+    width: 50%; /* Each div takes up almost half the available space */
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow effect */
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
 }
 
 /* Optional styling to ensure responsiveness */
@@ -254,4 +256,20 @@ header img {
     }
 }
 
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
 
+#link {
+    text-decoration: none;
+    color: #fff;
+    display: inline-block; /* Ensures the element can scale properly */
+    transition: transform 0.3s ease; /* Adds smooth scaling */
+}
+
+#link:hover {
+    transform: scale(1.1) ;
+}

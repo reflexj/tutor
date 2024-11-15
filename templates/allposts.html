@@ -34,66 +34,59 @@
     
     <main>
         
-        <!--All Requests-->
+                <!-- All Requests -->
         <div id="all_requests">
-            
-                <h2>Requests</h2>
-            
-
-            <form>                
+            <h2>Requests</h2>
+            <form>
                 {% if requests %}
-                <ul>
-                    {% for request, username in requests %}
-                
+                <div class="post-container">
+                        {% for request, username in requests %}
+                        <ul class="post-list">
                         <li>
-                            <h3>{{ request.title }}</h3>
+                            <a id="link" href="{{ url_for('request_detail', request_id=request.id) }}"><h3>{{ request.title }}</h3></a>
                             <p><strong>Subject:</strong> {{ request.subject }}</p>
                             <p><strong>Description:</strong> {{ request.description }}</p>
                             <p><strong>Created by:</strong> {{ username }}</p>
-                            <a href="{{ url_for('request_detail', request_id=request.id) }}">View Details</a>
                         </li>
-                    
-                    {% endfor %}
-                </ul>
-            {% else %}
-            <p>No requests available.</p>
-            {% endif %}
-        </form>
-        </div>
-
-        <!--All Services-->
-        <div id="all_services">
-            
-            <h2>Services</h2>
-            
-
-            <form>
-                    {% if posts %}
-                    <ul>
-                        {% for post, username in posts %}
-
-                                <li>
-                                    <h3>{{ post.title }}</h3>
-                                    <p><strong>Subject:</strong> {{ post.subject }}</p>
-                                    <p><strong>Price:</strong> ${{ post.price }}</p>
-                                    <p><strong>Created by:</strong> {{ username }}</p>
-                                    <a href="{{ url_for('service_detail', service_id=post.id) }}">View Details</a>
-                                </li>
-
-                        {% endfor %}
                     </ul>
+                    {% endfor %}
+                </div>
                 {% else %}
-                        <p>No services available.</p>
+                <p id="no">No requests available.</p>
                 {% endif %}
             </form>
-                
         </div>
+
+        <!-- All Services -->
+        <div id="all_services">
+            <h2>Services</h2>
+            <form>
+                {% if posts %}
+                <div class="post-container">
+                    {% for post, username in posts %}
+                    <ul class="post-list">
+                        <li>
+                            
+                            <a id="link" href="{{ url_for('service_detail', service_id=post.id) }}"><h3>{{ post.title }}</h3></a>
+                            <p><strong>Subject:</strong> {{ post.subject }}</p>
+                            <p><strong>Price:</strong> ${{ post.price }}</p>
+                            <p><strong>Created by:</strong> {{ username }}</p>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p id="no">No services available.</p>
+                {% endif %}
+            </form>
+        </div>
+
             
            
     </main>
 
     <footer>
-        <p>&copy; 2023 Your Website</p>
+        <p>&copy; 2024 Students4Students</p>
     </footer>
 </body>
 </html>
