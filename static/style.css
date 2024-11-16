@@ -125,6 +125,17 @@ form button:hover {
     background-color: #1b8662;
 }
 
+
+
+#searchbar {
+    background-color: #fff;
+    max-width: 600px;
+    padding: 25px 30px;
+}
+#searchbar input {
+    width: 400px;
+}
+
 h2 {
     text-align: center;
 }
@@ -244,3 +255,52 @@ header img {
         margin-bottom: 15px; /* Space between logo and content */
     }
 }
+
+
+/* Main Content */
+.search-results-page main {
+    padding: 20px;
+}
+
+.search-results-page main h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-results-page main h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: black;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.search-results-page main ul {
+    list-style: none;
+    padding: 0;
+}
+
+.search-results-page main ul li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.search-results-page main ul li a {
+    color: #10513c;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.search-results-page main ul li a:hover {
+    color: #69ae97;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .search-results-page #searchbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+

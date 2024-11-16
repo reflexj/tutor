@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="search-results-page">
+    <header>
+        <a href="/">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Website Logo" id="logo">
+        </a>
+        <h1>All Posts</h1>
+        <nav>
+            <ul>
+                <li><a href="/allposts">All posts</a></li>
+                <li><a href="/createpost">Create Post</a></li>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+        <section class="auth-links">
+            {% if current_user.is_authenticated %}
+                <a href="/profile">Your Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </section>
+    </header>
+    
+    <!-- Search Bar -->
+    <form id="searchbar" action="{{ url_for('search_results') }}" method="get">
+        <input type="text" name="query" placeholder="Search services or requests" required>
+        <button type="submit">Search</button>
+    </form>
+     <main>
+            <h1>Search Results</h1>
+                    {% if service_results %}
+                    <h2>Service Posts</h2>
+
+                        <ul>
+                            {% for service in service_results %}
+                                <li>
+                                    <a href="{{ url_for('service_detail', service_id=service.id) }}">{{ service.title }}</a> 
+                                    <p><strong>Description: </strong>{{ service.description }}</p>
+                                    <p><strong>Price: </strong>{{ service.price }}</p>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                {% else %}
+                    <p>No service posts found for your query.</p>
+                {% endif %}
+
+            
+            <div id="all_requests">
+                    {% if request_results %}
+                    <h2>Request Posts</h2>
+                    <ul>
+                    {% for request in request_results %}
+                        <li>
+                            <a href="{{ url_for('request_detail', request_id=request.id) }}">{{ request.title }}</a>
+                            <p><strong>Description: </strong>{{ request.description }}</p>
+                            <p><strong>Subject: </strong>{{ request.subject }}</p>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No request posts found for your query.</p>
+                {% endif %}
+            </div>
+
+    </main>
+    
+    
+    <footer>
+        <p>&copy; 2024 Students4Students</p>
+    </footer>
+</body>
+</html>

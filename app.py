@@ -179,23 +179,6 @@ def delete_post(post_id):
     db.session.commit()
     return redirect(url_for('profile'))
 
-# Route for searching services
-@app.route('/search_results_supply', methods=['GET'])
-def search_results_supply():
-    query = request.args.get('query')  # Get the search term from the URL (query parameter)
-    
-    if query:
-        results = ServicePost.query.filter(
-            (ServicePost.title.ilike(f"%{query}%")) |  # Match title
-            (ServicePost.subject.ilike(f"%{query}%"))  # Or match subject
-        ).all()
-    else:
-        results = ServicePost.query.all()  # If no query, show all results
-    
-    return render_template('search_results_supply.html', results=results)
-
-
-
 #Demand side Deletable if need 
 
 class RequestPost(db.Model):
@@ -260,21 +243,6 @@ def request_detail(request_id):
     request_post = RequestPost.query.get_or_404(request_id)
     return render_template('request_detail.html', request=request_post)
 
-@app.route('/search_results_requests', methods=['GET'])
-def search_results_requests():
-    query = request.args.get('query')
-    if query:
-        results = RequestPost.query.filter(
-            (RequestPost.title.ilike(f"%{query}%")) |
-            (RequestPost.subject.ilike(f"%{query}%"))
-        ).all()
-    else:
-        results = RequestPost.query.all()
-    
-    return render_template('search_results_requests.html', results=results)
-
-
-
 #demandside until here
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -316,6 +284,36 @@ def profile():
     request_posts = RequestPost.query.filter_by(user_id=current_user.id).all()
 
     return render_template('profile.html', service_posts=service_posts, request_posts=request_posts)
+
+@app.route('/search_results', methods=['GET'])
+def search_results():
+    query = request.args.get('query')  
+
+    if query:
+        # Search both ServicePost and RequestPost
+        service_results = ServicePost.query.filter(
+            (ServicePost.title.ilike(f"%{query}%")) |
+            (ServicePost.subject.ilike(f"%{query}%"))
+        ).all()
+
+        request_results = RequestPost.query.filter(
+            (RequestPost.title.ilike(f"%{query}%")) |
+            (RequestPost.subject.ilike(f"%{query}%"))
+        ).all()
+    else:
+        # If no query, return empty lists
+        service_results = []
+        request_results = []
+
+    # Return the combined results
+    return render_template(
+        'search_results.html',
+        service_results=service_results,
+        request_results=request_results,
+        )
+
+
+
 
 
 if __name__ == "__main__":

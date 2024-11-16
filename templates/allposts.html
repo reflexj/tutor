@@ -15,9 +15,8 @@
         <nav>
             <ul>
                 <li><a href="/allposts">All posts</a></li>
-                <li><a href="/supply">Services</a></li>
-                <li><a href="/requests">Requests</a></li>
                 <li><a href="/createpost">Create Post</a></li>
+                <li><a href="/">Home</a></li>
             </ul>
         </nav>
         <section class="auth-links">
@@ -29,61 +28,64 @@
                 <a href="{{ url_for('register') }}">Register</a>
             {% endif %}
         </section>
-        
     </header>
     
+    <!-- Search Bar -->
+
+    <form id="searchbar" action="{{ url_for('search_results') }}" method="get">
+        <input type="text" name="query" placeholder="Search services or requests" required>
+        <button type="submit">Search</button>
+    </form>
+    
+    
     <main>
-        
-                <!-- All Requests -->
+        <!-- All Requests -->
         <div id="all_requests">
             <h2>Requests</h2>
-            <form>
-                {% if requests %}
-                <div class="post-container">
-                        {% for request, username in requests %}
-                        <ul class="post-list">
-                        <li>
-                            <a id="link" href="{{ url_for('request_detail', request_id=request.id) }}"><h3>{{ request.title }}</h3></a>
+            {% if requests %}
+            <div class="post-container">
+                {% for request, username in requests %}
+                <ul class="post-list">
+                    <li>
+                        <a id="link" href="{{ url_for('request_detail', request_id=request.id) }}">
+                            <h3>{{ request.title }}</h3>
                             <p><strong>Subject:</strong> {{ request.subject }}</p>
                             <p><strong>Description:</strong> {{ request.description }}</p>
                             <p><strong>Created by:</strong> {{ username }}</p>
-                        </li>
-                    </ul>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p id="no">No requests available.</p>
-                {% endif %}
-            </form>
+                        </a>
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p id="no">No requests available.</p>
+            {% endif %}
         </div>
-
+    
         <!-- All Services -->
         <div id="all_services">
             <h2>Services</h2>
-            <form>
-                {% if posts %}
-                <div class="post-container">
-                    {% for post, username in posts %}
-                    <ul class="post-list">
-                        <li>
-                            
-                            <a id="link" href="{{ url_for('service_detail', service_id=post.id) }}"><h3>{{ post.title }}</h3></a>
+            {% if posts %}
+            <div class="post-container">
+                {% for post, username in posts %}
+                <ul class="post-list">
+                    <li>
+                        <a id="link" href="{{ url_for('service_detail', service_id=post.id) }}">
+                            <h3>{{ post.title }}</h3>
                             <p><strong>Subject:</strong> {{ post.subject }}</p>
                             <p><strong>Price:</strong> ${{ post.price }}</p>
                             <p><strong>Created by:</strong> {{ username }}</p>
-                        </li>
-                    </ul>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p id="no">No services available.</p>
-                {% endif %}
-            </form>
+                        </a>
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p id="no">No services available.</p>
+            {% endif %}
         </div>
-
-            
-           
     </main>
+    
 
     <footer>
         <p>&copy; 2024 Students4Students</p>

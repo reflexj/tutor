@@ -70,6 +70,44 @@ nav ul li a {
     transform: scale(1.1);
 }
 
+
+form {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+form button {
+    max-width: 600px;
+    padding: 10px 20px;
+    background-color: #10513c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #1b8662;
+}
+
+#searchbar {
+    background-color: #fff;
+    max-width: 600px;
+    padding: 25px 30px;
+}
+#searchbar input {
+    width: 400px;
+}
+
 /* Main Content Layout */
 main {
     flex: 1;
@@ -103,7 +141,7 @@ main {
     list-style-type: none;     /* Removes default list bullets */
     margin: 0;                 /* Removes default margin */
     padding: 0;                /* Removes default padding */
-    width: 190px;              /* Adjust the width as needed */
+    width: 180px;              /* Adjust the width as needed */
     background-color: #50947d; /* Optional: Adds background color */
     border: 1px solid #fff;    /* Optional: Adds border */
     border-radius: 10px;
@@ -271,5 +309,5 @@ footer {
 }
 
 #link:hover {
-    transform: scale(1.1) ;
+    transform: scale(1.05) ;
 }
