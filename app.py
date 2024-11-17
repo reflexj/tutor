@@ -46,6 +46,46 @@ class ServicePost(db.Model):
 
     def __repr__(self):
         return f'<ServicePost {self.title}>'
+    
+@app.route('/edit_service/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_service(post_id):
+    post = ServicePost.query.get_or_404(post_id)
+    if post.user != current_user:
+        abort(403)  # Unauthorized access
+    if request.method == 'POST':
+        post.title = request.form['title']
+        post.description = request.form['description']
+        post.price = request.form['price']
+        post.subject = request.form['subject']
+        post.university = request.form['university']
+        post.semester = request.form['semester']
+        post.contact =request.form['contact']
+        post.additional_info = request.form['additional_info']
+        
+        db.session.commit()  
+
+        flash('Your service post has been updated!', 'success')
+        return redirect(url_for('profile'))
+    return render_template('edit_service.html', post=post)
+
+@app.route('/edit_request/<int:request_id>', methods=['GET', 'POST']) 
+@login_required
+def edit_request(request_id):
+    request_post = RequestPost.query.get_or_404(request_id) 
+    if request_post.user != current_user: 
+        abort(403) # Unauthorized access
+    if request.method == 'POST': 
+        request_post.title = request.form['title'] 
+        request_post.description = request.form['description'] 
+        request_post.subject = request.form['subject'] 
+        request_post.price = request.form.get('price')
+        request_post.contact = request.form['contact']
+        request_post.additional_information = request.form.get('additional_information')
+        db.session.commit() 
+        flash('Your request post has been updated!', 'success')
+        return redirect(url_for('profile')) 
+    return render_template('edit_request.html', request_post=request_post) 
 
 @login_manager.user_loader
 def load_user(user_id):

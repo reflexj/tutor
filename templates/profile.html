@@ -49,6 +49,10 @@
                             <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
                                 <button type="submit">Delete</button>
                             </form>
+                            <a href="{{ url_for('edit_service', post_id=post.id) }}">
+                                <button type="button">Edit</button>
+                            </a>
+                            
                         </li>
                     {% endfor %}
                 </ul>
@@ -73,6 +77,10 @@
                                 <form action="{{ url_for('delete_request', request_id=request.id) }}" method="POST">
                                 <button type="submit">Delete</button>
                                 </form>
+                                <a href="{{ url_for('edit_request', request_id=request.id) }}">
+                                    <button type="button">Edit</button>
+                                </a>
+                                
                                 
                             </li>
                         {% endfor %}

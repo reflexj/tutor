@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Edit Request Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Website Logo" id="logo">
+        </a>
+        <h1>Edit Your Request Post</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/createpost">Create Post</a></li>
+            </ul>
+        </nav>
+        <section class="auth-links">
+            {% if current_user.is_authenticated %}
+                <a href="/profile">Your Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </section>
+    </header>
+
+    <main>
+        <form method="POST" action="{{ url_for('edit_request', request_id=request_post.id) }}">
+            <h2>Edit Request Post</h2>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{ request_post.title }}" required>
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" value="{{ request_post.subject }}" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required>{{ request_post.description }}</textarea>
+
+            <label for="price">Price</label>
+            <input id="price" name="price" value="{{ request_post.price }}" required>
+
+            <label for="contact">Contact</label>
+            <textarea id="contact" name="contact" required>{{ request_post.contact }}</textarea>
+
+            <label for="additional_information">Additional Information:</label>
+            <textarea id="additional_information" name="additional_information">{{ request_post.additional_information }}</textarea>
+            
+       
+
+            <button type="submit">Update Request</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Students4Students</p>
+    </footer>
+</body>
+</html>
