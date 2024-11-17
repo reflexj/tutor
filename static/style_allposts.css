@@ -182,7 +182,7 @@ main {
     }
 
     /* Mobile styles for auth-links */
-    .auth-links {
+    header > .auth-links {
         position: static;  /* Reset position for mobile */
         margin-left: 22%;
         flex-direction: column;
@@ -191,7 +191,7 @@ main {
         margin-top: 15px;
     }
 
-    .auth-links a {
+    header > .auth-links a {
         font-size: 18px;
         padding: 5px 0;
         width: 100%;
