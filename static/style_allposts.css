@@ -46,19 +46,20 @@ nav ul li a {
 }
 
 /* Auth Links Styling */
-.auth-links {
+header > .auth-links {
     display: flex;
     gap: 15px;
     background-color: #50947d;
+    position: absolute;
     padding: 5px 15px;
     border-radius: 5px;
     margin-left: auto;  /* Pushes to the right */
-    position: absolute;  /* Makes it position independently */
     right: 15px;  /* 15px from the right edge */
-    top: 15px;  /* Aligns with the top of the header */
+    top: 45px;  /* Aligns with the top of the header */
 }
 
-.auth-links a {
+
+header > .auth-links a {
     color: white;
     text-decoration: none;
     font-weight: bold;
@@ -66,7 +67,7 @@ nav ul li a {
     transition: transform 0.3s ease; /* Adds smooth scaling */
 }
 
-.auth-links a:hover {
+header > .auth-links a:hover {
     transform: scale(1.1);
 }
 

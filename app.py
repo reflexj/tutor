@@ -112,26 +112,11 @@ def university():
 def highschool():
     return render_template('highschool.html')
 
-@app.route('/supply')
-def supply():
-    # Fetch all the service posts, including the username
-    posts = ServicePost.query.join(User).add_columns(User.username).all()
-    return render_template('supply.html', posts=posts)
-
-@app.route('/requests')
-def requests():
-    # Fetch all the request posts, including the username
-    requests = RequestPost.query.join(User).add_columns(User.username).all()
-    return render_template('requests.html', requests=requests)
-
 @app.route('/allposts')
 def allposts():
     posts = ServicePost.query.join(User).add_columns(User.username).all()
     requests = RequestPost.query.join(User).add_columns(User.username).all()
     return render_template('allposts.html', requests =requests, posts = posts)
-
-
-
 
 # Route for individual service pages
 @app.route('/service/<int:service_id>')
@@ -166,7 +151,7 @@ def add_service():
     )
     db.session.add(new_post)
     db.session.commit()
-    return redirect(url_for('supply'))
+    return redirect(url_for('allposts'))
 
 # Route for deleting a post
 @app.route('/delete_post/<int:post_id>', methods=['POST'])
@@ -220,7 +205,7 @@ def add_demand():
     db.session.commit()
 
     flash('Your request has been submitted successfully!', 'success')
-    return redirect(url_for('requests'))
+    return redirect(url_for('allposts'))
 
 
 
@@ -311,7 +296,6 @@ def search_results():
         service_results=service_results,
         request_results=request_results,
         )
-
 
 
 
