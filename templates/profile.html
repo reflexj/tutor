@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>User Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Flexbox styling for sections */
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        main section {
+            flex: 1 1 calc(30%); /* Take half the width with spacing */
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f9f9f9; /* Optional for better visuals */
+            border: 1px solid #ddd; /* Optional for separation */
+            border-radius: 8px; /* Optional for styling */
+        }
+
+        section h2 {
+            margin-top: 0;
+        }
+
+        section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        section ul li {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-right: 10px;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <a href="/">
@@ -21,88 +58,85 @@
         </nav>
         <section class="auth-links">
             {% if current_user.is_authenticated %}
-                <a href="/profile">Your Profile</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="/profile">Your Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
             {% endif %}
         </section>
-        
     </header>
-    
+
     <main>
-            <section>
-                <form>
-                <h2>Your Service Posts</h2>
-                </form>
-                {% if service_posts %}
-                <ul>
-                    {% for post in service_posts %}
-                        <li>
-                            <h2>{{ post.title }}</h2>
-                            <p>{{ post.description }}</p>
-                            <p>Price: ${{ post.price }}</p>
-                            <p>Subject: {{ post.subject }}</p>
-                            <p>University: {{ post.university }}</p>
-                            <p>Semester: {{ post.semester }}</p>
-                            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
-                                <button type="submit">Delete</button>
-                            </form>
-                            <a href="{{ url_for('edit_service', post_id=post.id) }}">
-                                <button type="button">Edit</button>
-                            </a>
-                            
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>You haven't posted any services yet.</p>
-            {% endif %}
+
+        <form method="POST" action="{{ url_for('profile') }}">
+            <h2>Your Profile</h2>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ current_user.username }}" required>
             
-            </section>
-        
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Leave blank to keep the same">
+            
+            <button type="submit">Update Profile</button>
+        </form>
 
-            <section>
-                <form>
-                <h2>Your Request Posts</h2>
-                </form>
-                {% if request_posts %}
-                    <ul>
-                        {% for request in request_posts %}
-                            <li>
-                                <h3>{{ request.title }}</h3>
-                                <p>{{ request.subject }}</p>
-                                <p>{{ request.description }}</p>
-                                <form action="{{ url_for('delete_request', request_id=request.id) }}" method="POST">
-                                <button type="submit">Delete</button>
-                                </form>
-                                <a href="{{ url_for('edit_request', request_id=request.id) }}">
-                                    <button type="button">Edit</button>
-                                </a>
-                                
-                                
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>You have not submitted any requests yet.</p>
-                {% endif %}
-            </section>
+        <!-- Service Posts Section -->
+        <section>
+            <h2>Your Service Posts</h2>
+            {% if service_posts %}
+            <ul>
+                {% for post in service_posts %}
+                <li>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description }}</p>
+                    <p>Price: ${{ post.price }}</p>
+                    <p>Subject: {{ post.subject }}</p>
+                    <p>University: {{ post.university }}</p>
+                    <p>Semester: {{ post.semester }}</p>
+                    <div class="button-group">
+                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" >
+                            <button type="submit" class="action-button">Delete</button>
+                            <a href="{{ url_for('edit_service', post_id=post.id) }}">
+                                <button type="button" class="action-button">Edit</button>
+                            </a>
+                        </form>
 
-            <form method="POST" action="{{ url_for('profile') }}">
-                <h2>Update Your Profile</h2>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ current_user.username }}" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Leave blank to keep the same">
-                
-                <button type="submit">Update Profile</button>
-            </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You haven't posted any services yet.</p>
+            {% endif %}
+        </section>
+
+        <!-- Request Posts Section -->
+        <section>
+            <h2>Your Request Posts</h2>
+            {% if request_posts %}
+            <ul>
+                {% for request in request_posts %}
+                <li>
+                    <h3>{{ request.title }}</h3>
+                    <p>{{ request.subject }}</p>
+                    <p>{{ request.description }}</p>
+                    <div class="button-group">
+                        <form action="{{ url_for('delete_request', request_id=request.id) }}" method="POST">
+                            <button type="submit" class="action-button">Delete</button>
+                            <a href="{{ url_for('edit_request', request_id=request.id) }}">
+                                <button type="button" class="action-button">Edit</button>
+                            </a>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You have not submitted any requests yet.</p>
+            {% endif %}
+        </section>
 
     </main>
     
